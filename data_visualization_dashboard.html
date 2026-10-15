@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Data Visualization Dashboard</title>
+<style>
+:root{--navy:#17365d;--blue:#1769e0;--ink:#18345b;--muted:#617694;--line:#dce8f7;--bg:#f4f8fd}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;background:var(--bg);color:var(--ink)}
+header{height:66px;background:linear-gradient(110deg,#17365d,#29496f);color:white;display:flex;align-items:center;justify-content:space-between;padding:0 28px;box-shadow:0 3px 14px #17365d20}
+.brand{display:flex;align-items:center;gap:13px;font-size:22px;font-weight:750}.brandmark{font-size:30px} .user{font-size:14px;font-weight:600}
+.layout{display:grid;grid-template-columns:205px 1fr;min-height:calc(100vh - 66px)}
+aside{padding:18px 12px;border-right:1px solid var(--line);background:#f8fbff;display:flex;flex-direction:column;gap:8px}
+.nav{border:0;background:transparent;color:#3b567a;padding:13px 14px;border-radius:9px;text-align:left;font-size:14px;cursor:pointer}.nav.active,.nav:hover{background:#dcecff;color:#075ed4;font-weight:700}
+.side-note{margin-top:auto;padding:15px 8px;color:#7085a4;font-size:12px;line-height:1.7}
+main{padding:26px 24px 20px;min-width:0}.heading{display:flex;align-items:center;justify-content:space-between;gap:15px;margin-bottom:22px}.heading h1{margin:0;font-size:28px;letter-spacing:-.6px}.heading p{margin:5px 0 0;color:var(--muted);font-size:14px}
+select{padding:10px 12px;border:1px solid #cbdcf0;border-radius:10px;background:white;color:var(--ink);font-size:13px}
+.metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:15px;margin-bottom:20px}
+.metric{padding:17px 18px;border-radius:12px;border:1px solid var(--line);background:white;box-shadow:0 4px 16px #193d6610;min-width:0}
+.metric .label{font-size:13px;font-weight:650;color:#536b8d}.metric .value{font-size:25px;font-weight:800;margin:10px 0 8px;letter-spacing:-.5px}.metric .sub{font-size:12px;color:#0a9b68}
+.metric.blue{background:linear-gradient(135deg,#e7f3ff,#fff);border-color:#c6e0ff}.metric.green{background:linear-gradient(135deg,#e8fbf4,#fff);border-color:#c5efdf}.metric.purple{background:linear-gradient(135deg,#f1ebff,#fff);border-color:#ddd0ff}.metric.orange{background:linear-gradient(135deg,#fff3e7,#fff);border-color:#ffdfbd}
+.dashboard{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) 280px;gap:15px;align-items:stretch}
+.panel{background:white;border:1px solid var(--line);border-radius:12px;padding:17px 16px;box-shadow:0 4px 16px #193d6608;min-width:0}
+.panel h2{font-size:16px;margin:0 0 13px;display:flex;align-items:center;gap:8px}.chart{width:100%;height:auto;display:block;overflow:visible}.chart text{font-family:inherit;fill:#526b8c;font-size:10px}.gridline{stroke:#e6eef8;stroke-width:1}.axis{stroke:#9bb0ca;stroke-width:1}.bar{fill:#347ee7;opacity:.92;transition:opacity .2s}.bar:hover{opacity:.65}.trend{fill:none;stroke:#1268e8;stroke-width:2.7;stroke-linejoin:round;stroke-linecap:round}.profitline{fill:none;stroke:#119b69;stroke-width:2.7;stroke-linejoin:round;stroke-linecap:round}.dot{fill:#1268e8}.profitdot{fill:#119b69}.scatter{fill:#f5a000;opacity:.9}
+.rightcol{display:flex;flex-direction:column;gap:15px}.insights{background:linear-gradient(145deg,#effcf7,#fff);border-color:#c7ebdd}.insight{padding:11px 0;border-bottom:1px solid #dcefe8}.insight:last-child{border:0;padding-bottom:0}.insight b{display:block;font-size:14px;margin:5px 0}.insight small{color:var(--muted);font-size:12px}.icon{font-size:18px;margin-right:7px}.conclusion{background:linear-gradient(145deg,#f2edff,#fff);border-color:#ddd0ff;line-height:1.7;font-size:13px;color:#425a7b}.conclusion h2{color:#4c24b6}.data-panel{display:none;margin-top:16px}.data-panel.show{display:block}.data-panel table{border-collapse:collapse;width:100%;font-size:13px}.data-panel th,.data-panel td{text-align:left;padding:10px;border-bottom:1px solid var(--line)}.data-panel th{background:#f1f6fd}.section-hidden{display:none!important}
+footer{text-align:center;color:#7b8eaa;font-size:12px;padding:20px}
+@media(max-width:1100px){.dashboard{grid-template-columns:1fr 1fr}.rightcol{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr}.metrics{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:700px){header{padding:0 15px}.brand{font-size:17px}.user{font-size:12px}.layout{grid-template-columns:1fr}aside{flex-direction:row;overflow-x:auto;padding:8px;border-right:0;border-bottom:1px solid var(--line)}.nav{white-space:nowrap;padding:10px}.side-note{display:none}main{padding:18px 12px}.heading{align-items:flex-start;flex-direction:column}.heading h1{font-size:23px}.metrics{gap:9px}.metric{padding:13px}.metric .value{font-size:20px}.dashboard{grid-template-columns:1fr}.rightcol{grid-column:auto;display:flex}.panel{padding:14px}.chart{max-height:260px}}
+</style>
+</head>
+<body>
+<header><div class="brand"><span class="brandmark">▥</span> Data Visualization Dashboard</div><div class="user">♟ &nbsp; Deepak Kumar</div></header>
+<div class="layout">
+<aside>
+<button class="nav active" data-view="dashboard">⌂ &nbsp; Dashboard</button>
+<button class="nav" data-view="table">▤ &nbsp; Data Table</button>
+<button class="nav" data-view="insights">♧ &nbsp; Insights</button>
+<button class="nav" data-view="about">ⓘ &nbsp; About</button>
+<div class="side-note">Turn data into insights, and insights into better decisions.<br><br>↗ ──╱</div>
+</aside>
+<main>
+<div class="heading"><div><h1>▥ &nbsp; Sales &amp; Profit Analysis</h1><p>Visualizing data to find trends, patterns and insights</p></div>
+<select id="period" aria-label="Choose reporting period"><option value="all">Jan 2024 – Dec 2024</option><option value="first">Jan – Jun 2024</option><option value="second">Jul – Dec 2024</option></select></div>
+<section id="dashboardView">
+<div class="metrics">
+<div class="metric blue"><div class="label">▤ &nbsp; Total Sales</div><div class="value" id="totalSales">₹ 3,05,000</div><div class="sub">↑ Sales across the selected period</div></div>
+<div class="metric green"><div class="label">♙ &nbsp; Total Profit</div><div class="value" id="totalProfit">₹ 68,500</div><div class="sub">↑ Profit across the selected period</div></div>
+<div class="metric purple"><div class="label">▣ &nbsp; Highest Sales Month</div><div class="value" id="bestMonth">December</div><div class="sub" id="bestValue">₹ 40,000</div></div>
+<div class="metric orange"><div class="label">▥ &nbsp; Average Monthly Sales</div><div class="value" id="avgSales">₹ 25,416.67</div><div class="sub">Average per month</div></div>
+</div>
+<div class="dashboard">
+<div class="panel"><h2>▥ &nbsp; Monthly Sales</h2><svg id="salesBar" class="chart" viewBox="0 0 420 235" role="img" aria-label="Monthly sales bar chart"></svg></div>
+<div class="panel"><h2>⌁ &nbsp; Sales Trend Over the Year</h2><svg id="salesLine" class="chart" viewBox="0 0 420 235" role="img" aria-label="Sales trend line chart"></svg></div>
+<div class="rightcol">
+<div class="panel insights"><h2>💡 &nbsp; Key Insights</h2>
+<div class="insight">↗ <b id="insSales">Total Sales: ₹ 3,05,000</b><small>Total revenue in the selected period.</small></div>
+<div class="insight">↗ <b id="insProfit">Total Profit: ₹ 68,500</b><small>Total profit earned in the selected period.</small></div>
+<div class="insight">★ <b id="insBest">Highest Sales Month: December</b><small id="insBestSmall">Best performing month.</small></div>
+<div class="insight">▥ <b id="insAvg">Average Sales: ₹ 25,416.67</b><small>Average sales per month.</small></div></div>
+<div class="panel conclusion"><h2>◎ &nbsp; Conclusion</h2><div id="conclusionText">Sales and profit generally increase over the year. December is the strongest month, which may help with planning inventory and future sales strategies.</div></div>
+</div>
+<div class="panel"><h2>⌁ &nbsp; Monthly Profit</h2><svg id="profitLine" class="chart" viewBox="0 0 420 235" role="img" aria-label="Monthly profit line chart"></svg></div>
+<div class="panel"><h2>⠿ &nbsp; Sales vs Profit</h2><svg id="scatter" class="chart" viewBox="0 0 420 235" role="img" aria-label="Sales and profit scatter plot"></svg></div>
+</div>
+</section>
+<section id="tableView" class="panel data-panel"><h2>Monthly Data Table</h2><table><thead><tr><th>Month</th><th>Sales (₹)</th><th>Profit (₹)</th></tr></thead><tbody id="dataRows"></tbody></table></section>
+<section id="insightsView" class="panel data-panel"><h2>Business Insights</h2><ul id="insightList"></ul></section>
+<section id="aboutView" class="panel data-panel"><h2>About this project</h2><p>This responsive data visualization dashboard turns monthly sales and profit data into charts and useful business insights. It is built with HTML, CSS and vanilla JavaScript, so no Python packages or chart libraries are required.</p><p><b>Tools:</b> HTML · CSS · JavaScript · SVG charts</p><p><b>Portfolio note:</b> The figures shown are sample data for demonstration. Replace them with your own dataset before presenting it as real business analysis.</p></section>
+</main></div>
+<footer>Data Visualization Dashboard &nbsp; | &nbsp; Built with ♥ for better insights</footer>
+<script>
+const allData=[
+["Jan",12000,2000],["Feb",15000,3000],["Mar",18000,3500],["Apr",14000,2500],
+["May",22000,5000],["Jun",25000,6000],["Jul",20000,4500],["Aug",28000,7000],
+["Sep",30000,7500],["Oct",26000,6500],["Nov",35000,9000],["Dec",40000,11000]
+];
+const fmt=n=>"₹ "+n.toLocaleString("en-IN",{maximumFractionDigits:2});
+const ns="http://www.w3.org/2000/svg";
+function el(tag,attrs={},text){let n=document.createElementNS(ns,tag);Object.entries(attrs).forEach(([k,v])=>n.setAttribute(k,v));if(text!==undefined)n.textContent=text;return n}
+function text(svg,x,y,t,anchor="middle"){svg.append(el("text",{x,y,"text-anchor":anchor},t))}
+function chartBase(svg,max,yStep,yLabel){svg.innerHTML="";let w=420,h=235,L=48,R=10,T=12,B=35,pw=w-L-R,ph=h-T-B;
+for(let v=0;v<=max;v+=yStep){let y=T+ph-v/max*ph;svg.append(el("line",{x1:L,y1:y,x2:w-R,y2:y,class:"gridline"}));text(svg,L-8,y+3,v===0?"0":(v/1000)+"K","end")}
+svg.append(el("line",{x1:L,y1:T,x2:L,y2:T+ph,class:"axis"}),el("line",{x1:L,y1:T+ph,x2:w-R,y2:T+ph,class:"axis"}));
+return {L,R,T,B,pw,ph,w,h};}
+function drawBar(data){let s=document.getElementById("salesBar"),g=chartBase(s,50000,10000);let step=g.pw/data.length,bw=step*.66;
+data.forEach((d,i)=>{let x=g.L+i*step+(step-bw)/2,hh=d[1]/50000*g.ph,y=g.T+g.ph-hh;s.append(el("rect",{x,y,width:bw,height:hh,rx:1,class:"bar"}));text(s,x+bw/2,y-5,Math.round(d[1]/1000)+"K");text(s,x+bw/2,g.T+g.ph+17,d[0])});
+text(s,g.L+g.pw/2,g.h-3,"Month");text(s,12,g.T+g.ph/2,"Sales (₹)");}
+function drawLine(id,data,idx,max,step,color){let s=document.getElementById(id),g=chartBase(s,max,step);let dx=g.pw/Math.max(data.length-1,1),pts=data.map((d,i)=>[g.L+i*dx,g.T+g.ph-d[idx]/max*g.ph]);
+s.append(el("polyline",{points:pts.map(p=>p.join(",")).join(" "),class:idx===2?"profitline":"trend"}));
+pts.forEach((p,i)=>{s.append(el("circle",{cx:p[0],cy:p[1],r:3.4,class:idx===2?"profitdot":"dot"}));text(s,p[0],g.T+g.ph+17,data[i][0])});text(s,g.L+g.pw/2,g.h-3,"Month");}
+function drawScatter(data){let s=document.getElementById("scatter"),g=chartBase(s,12000,2000);data.forEach(d=>{let x=g.L+d[1]/45000*g.pw,y=g.T+g.ph-d[2]/12000*g.ph;s.append(el("circle",{cx:x,cy:y,r:4.1,class:"scatter"}))});text(s,g.L+g.pw/2,g.h-3,"Sales (₹)");}
+function render(){let period=document.getElementById("period").value;let data=period==="first"?allData.slice(0,6):period==="second"?allData.slice(6):allData;let sales=data.reduce((a,d)=>a+d[1],0),profit=data.reduce((a,d)=>a+d[2],0),best=data.reduce((a,b)=>a[1]>b[1]?a:b),avg=sales/data.length;
+document.getElementById("totalSales").textContent=fmt(sales);document.getElementById("totalProfit").textContent=fmt(profit);document.getElementById("bestMonth").textContent=best[0];document.getElementById("bestValue").textContent=fmt(best[1]);document.getElementById("avgSales").textContent=fmt(avg);
+document.getElementById("insSales").textContent="Total Sales: "+fmt(sales);document.getElementById("insProfit").textContent="Total Profit: "+fmt(profit);document.getElementById("insBest").textContent="Highest Sales Month: "+best[0];document.getElementById("insBestSmall").textContent=fmt(best[1])+" in sales.";document.getElementById("insAvg").textContent="Average Sales: "+fmt(avg);
+document.getElementById("conclusionText").textContent=`${best[0]} is the strongest sales month in this selection. Total sales are ${fmt(sales)} and total profit is ${fmt(profit)}. Use these patterns to guide inventory, budgeting and sales planning.`;
+drawBar(data);drawLine("salesLine",data,1,50000,10000);drawLine("profitLine",data,2,12000,2000);drawScatter(data);
+document.getElementById("dataRows").innerHTML=data.map(d=>`<tr><td>${d[0]}</td><td>${fmt(d[1])}</td><td>${fmt(d[2])}</td></tr>`).join("");
+document.getElementById("insightList").innerHTML=`<li>Total sales: <b>${fmt(sales)}</b></li><li>Total profit: <b>${fmt(profit)}</b></li><li>Best month: <b>${best[0]}</b> (${fmt(best[1])})</li><li>Average monthly sales: <b>${fmt(avg)}</b></li>`;
+}
+document.getElementById("period").addEventListener("change",render);
+document.querySelectorAll(".nav").forEach(btn=>btn.addEventListener("click",()=>{document.querySelectorAll(".nav").forEach(b=>b.classList.remove("active"));btn.classList.add("active");let v=btn.dataset.view;document.getElementById("dashboardView").classList.toggle("section-hidden",v!=="dashboard");["table","insights","about"].forEach(k=>document.getElementById(k+"View").classList.toggle("show",v===k));}));
+render();
+</script>
+</body>
+</html>
